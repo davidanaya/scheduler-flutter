@@ -24,14 +24,21 @@ class Meals {
     if (_mealIndex(meal) != -1) _meals.remove(meal);
   }
 
-  void _update(Meal meal, int index) {
-    _meals[index] = meal;
+  void update(Meal updated, Meal update) {
+    var index = _mealIndex(updated);
+    if (index != -1) {
+      _update(update, index);
+    }
   }
 
   int _mealIndex(Meal meal) {
     var found =
         _meals.firstWhere((e) => e.name == meal.name, orElse: () => null);
     return found != null ? _meals.indexOf(found) : -1;
+  }
+
+  void _update(Meal meal, int index) {
+    _meals[index] = meal;
   }
 
   @override

@@ -57,7 +57,7 @@ class MealsList extends StatelessWidget {
                       .map((meal) => MealTile(
                           meal: meal,
                           onRemove: () {
-                            mealsBloc.mealRemoval.add(meal);
+                            mealsBloc.removal.add(meal);
                           }))
                       .toList());
             }
