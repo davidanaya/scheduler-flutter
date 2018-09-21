@@ -11,7 +11,7 @@ import 'package:scheduler_flutter/src/widgets/meal_form.dart';
 class MealDetail extends StatefulWidget {
   final Meal meal;
 
-  MealDetail({meal}) : this.meal = meal ?? Meal('');
+  MealDetail({meal}) : this.meal = meal ?? Meal();
 
   @override
   _MealDetailState createState() => _MealDetailState();
@@ -48,6 +48,6 @@ class _MealDetailState extends State<MealDetail> {
   IconLabel _mealLabel() {
     return IconLabel(
         icon: FontAwesomeIcons.heart,
-        label: widget.meal.isEmpty() ? 'Create meal' : 'Save');
+        label: widget.meal.isUpdate() ? 'Save' : 'Create meal');
   }
 }

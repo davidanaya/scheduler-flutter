@@ -23,7 +23,10 @@ dependencies:
   font_awesome_flutter: ^8.0.1
 
   rxdart: ^0.18.1
-  
+
+  cloud_firestore: ^0.7.3
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

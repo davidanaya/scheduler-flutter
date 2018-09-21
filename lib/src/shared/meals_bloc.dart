@@ -3,56 +3,44 @@ import 'dart:async';
 import 'package:rxdart/subjects.dart';
 
 import 'package:scheduler_flutter/src/models/meal.dart';
-import 'package:scheduler_flutter/src/models/meals.dart';
-
-class MealUpdater {
-  Meal updated;
-  Meal update;
-
-  MealUpdater(this.updated, this.update);
-}
+import 'package:scheduler_flutter/src/services/meals_service.dart';
 
 class MealsBloc {
-  final Meals _meals = Meals();
-
   final _meals$ = BehaviorSubject<List<Meal>>(seedValue: []);
 
-  final StreamController<Meal> _removalController = StreamController<Meal>();
+  final StreamController<Meal> _deleteController = StreamController<Meal>();
 
-  final StreamController<Meal> _additionController = StreamController<Meal>();
+  final StreamController<Meal> _saveController = StreamController<Meal>();
 
-  final StreamController<MealUpdater> _updateController =
-      StreamController<MealUpdater>();
+  final MealsService _service;
 
-  MealsBloc() {
-    _removalController.stream.listen((meal) {
-      _meals.remove(meal);
-      _meals$.add(_meals.meals);
+  MealsBloc(this._service) {
+    _deleteController.stream.listen((meal) {
+      _service.delete(meal).catchError(_handleError);
     });
 
-    _additionController.stream.listen((meal) {
-      _meals.add(meal);
-      _meals$.add(_meals.meals);
+    _saveController.stream.listen((meal) {
+      _service.save(meal).catchError(_handleError);
     });
 
-    _updateController.stream.listen((updater) {
-      _meals.update(updater.updated, updater.update);
-      _meals$.add(_meals.meals);
+    _service.meals$.listen((meals) {
+      _meals$.add(meals);
     });
   }
 
-  Sink<Meal> get removal => _removalController.sink;
+  Sink<Meal> get delete => _deleteController.sink;
 
-  Sink<Meal> get addition => _additionController.sink;
-
-  Sink<MealUpdater> get update => _updateController.sink;
+  Sink<Meal> get save => _saveController.sink;
 
   Stream<List<Meal>> get meals$ => _meals$.stream;
 
   void dispose() {
     _meals$.close();
-    _removalController.close();
-    _additionController.close();
-    _updateController.close();
+    _deleteController.close();
+    _saveController.close();
+  }
+
+  _handleError(e) {
+    print(e);
   }
 }

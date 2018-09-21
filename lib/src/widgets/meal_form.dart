@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'package:scheduler_flutter/src/models/meal.dart';
-import 'package:scheduler_flutter/src/shared/meals_bloc.dart';
 import 'package:scheduler_flutter/src/shared/meals_provider.dart';
 import 'package:scheduler_flutter/src/shared/widgets/action_button.dart';
 import 'package:scheduler_flutter/src/shared/widgets/alert_delete.dart';
@@ -64,6 +63,9 @@ class _MealFormState extends State<MealForm> {
             validator: (value) =>
                 value.isEmpty ? 'Meal name can\'t be empty!' : null,
             controller: _nameController,
+            onSaved: (String value) {
+              widget.meal.name = value;
+            },
             decoration: _textFieldDecoration(
                 label: 'Meal name', hint: 'e.g. English Breakfast'),
           )),
@@ -169,8 +171,8 @@ class _MealFormState extends State<MealForm> {
                 onPressed: () async {
                   var delete = await _showAlertDelete(context);
                   if (delete) {
-                    if (!widget.meal.isEmpty()) {
-                      mealsBloc.removal.add(widget.meal);
+                    if (widget.meal.isUpdate()) {
+                      mealsBloc.delete.add(widget.meal);
                     }
                     Navigator.pop(context);
                   }
@@ -186,13 +188,10 @@ class _MealFormState extends State<MealForm> {
     final mealsBloc = MealsProvider.of(context);
 
     if (this._formKey.currentState.validate()) {
-      // update food in current meal
+      // update info from form into current meal
+      widget.meal.emptyFood();
       _formKey.currentState.save();
-
-      var meal = Meal.clone(widget.meal, _nameController.text);
-      widget.meal.isEmpty()
-          ? mealsBloc.addition.add(meal)
-          : mealsBloc.update.add(MealUpdater(widget.meal, meal));
+      mealsBloc.save.add(widget.meal);
     }
 
     Navigator.pop(context);
