@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import 'package:scheduler_flutter/src/models/meal.dart';
 import 'package:scheduler_flutter/src/shared/meals_bloc.dart';
 import 'package:scheduler_flutter/src/shared/meals_provider.dart';
 import 'package:scheduler_flutter/src/shared/widgets/action_button.dart';
+import 'package:scheduler_flutter/src/shared/widgets/alert_delete.dart';
 import 'package:scheduler_flutter/src/shared/widgets/card-section.dart';
 
 class MealForm extends StatefulWidget {
@@ -163,11 +166,14 @@ class _MealFormState extends State<MealForm> {
                   icon: Icon(Icons.close)),
             ]),
             IconButton(
-                onPressed: () {
-                  if (!widget.meal.isEmpty()) {
-                    mealsBloc.removal.add(widget.meal);
+                onPressed: () async {
+                  var delete = await _showAlertDelete(context);
+                  if (delete) {
+                    if (!widget.meal.isEmpty()) {
+                      mealsBloc.removal.add(widget.meal);
+                    }
+                    Navigator.pop(context);
                   }
-                  Navigator.pop(context);
                 },
                 icon: Icon(Icons.delete),
                 color: Colors.red),
@@ -190,5 +196,13 @@ class _MealFormState extends State<MealForm> {
     }
 
     Navigator.pop(context);
+  }
+
+  Future<bool> _showAlertDelete(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return showAlertDelete(context);
+        });
   }
 }

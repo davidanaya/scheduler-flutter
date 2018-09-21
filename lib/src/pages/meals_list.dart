@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -6,6 +8,7 @@ import 'package:scheduler_flutter/src/models/meal.dart';
 import 'package:scheduler_flutter/src/pages/meal_detail.dart';
 import 'package:scheduler_flutter/src/shared/meals_provider.dart';
 import 'package:scheduler_flutter/src/shared/widgets/action_button.dart';
+import 'package:scheduler_flutter/src/shared/widgets/alert_delete.dart';
 import 'package:scheduler_flutter/src/shared/widgets/card-section.dart';
 import 'package:scheduler_flutter/src/shared/widgets/card_title.dart';
 import 'package:scheduler_flutter/src/shared/widgets/icon_label.dart';
@@ -85,14 +88,31 @@ class MealTile extends StatelessWidget {
                 pageBuilder: (_, __, ___) => MealDetail(meal: meal)));
           },
           child: ListTile(
-            title: Text(meal.name),
-          ),
+              title: Text(meal.name),
+              subtitle: Text(
+                meal.food.join(', '),
+                style: TextStyle(
+                    color: Color(0xFF8ea6bd),
+                    fontSize: 12.0,
+                    fontStyle: FontStyle.italic),
+              )),
         ),
       ),
       IconButton(
         icon: Icon(Icons.delete, color: Colors.red),
-        onPressed: onRemove,
+        onPressed: () async {
+          var delete = await _showAlertDelete(context);
+          if (delete) onRemove();
+        },
       )
     ]);
+  }
+
+  Future<bool> _showAlertDelete(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return showAlertDelete(context);
+        });
   }
 }
