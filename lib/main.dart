@@ -4,13 +4,15 @@ import 'package:scheduler_flutter/src/pages/meals_list.dart';
 import 'package:scheduler_flutter/src/pages/schedule.dart';
 import 'package:scheduler_flutter/src/pages/workouts.dart';
 import 'package:scheduler_flutter/src/services/meals_firebase.dart';
+import 'package:scheduler_flutter/src/services/meals_sqlite.dart';
 import 'package:scheduler_flutter/src/shared/app_bar.dart';
 import 'package:scheduler_flutter/src/shared/meals_bloc.dart';
 import 'package:scheduler_flutter/src/shared/meals_provider.dart';
 import 'package:scheduler_flutter/src/shared/theme.dart';
 
 void main() {
-  final mealsService = MealsFirebase();
+  // final mealsService = MealsFirebase();
+  final mealsService = MealsSqlite();
 
   final mealsBloc = MealsBloc(mealsService);
 
