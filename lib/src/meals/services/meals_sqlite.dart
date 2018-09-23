@@ -6,8 +6,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sqflite/sqflite.dart';
 
-import 'package:scheduler_flutter/src/models/meal.dart';
-import 'package:scheduler_flutter/src/services/meals_service.dart';
+import 'package:scheduler_flutter/src/meals/models/meal.dart';
+import 'package:scheduler_flutter/src/meals/services/meals_service.dart';
 
 class MealsSqlite extends MealsService {
   // at some point this class could evolve into a SQliteHelper and be used

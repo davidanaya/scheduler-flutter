@@ -1,33 +1,50 @@
 import 'package:flutter/material.dart';
+import 'package:scheduler_flutter/app_bloc.dart';
+import 'package:scheduler_flutter/bloc_provider.dart';
 
-import 'package:scheduler_flutter/src/pages/meals_list.dart';
-import 'package:scheduler_flutter/src/pages/schedule.dart';
-import 'package:scheduler_flutter/src/pages/workouts.dart';
-import 'package:scheduler_flutter/src/services/meals_firebase.dart';
-import 'package:scheduler_flutter/src/services/meals_sqlite.dart';
+import 'package:scheduler_flutter/src/meals/pages/meals_list.dart';
+import 'package:scheduler_flutter/src/meals/services/meals_firebase.dart';
+import 'package:scheduler_flutter/src/meals/services/meals_sqlite.dart';
+import 'package:scheduler_flutter/src/schedule/schedule.dart';
 import 'package:scheduler_flutter/src/shared/app_bar.dart';
-import 'package:scheduler_flutter/src/shared/meals_bloc.dart';
-import 'package:scheduler_flutter/src/shared/meals_provider.dart';
 import 'package:scheduler_flutter/src/shared/theme.dart';
+import 'package:scheduler_flutter/src/workouts/pages/workouts_list.dart';
+import 'package:scheduler_flutter/src/workouts/services/workouts_firebase.dart';
+
+enum Api { firebase, sqlite }
 
 void main() {
-  // final mealsService = MealsFirebase();
-  final mealsService = MealsSqlite();
+  final api = Api.firebase;
 
-  final mealsBloc = MealsBloc(mealsService);
+  var mealsService;
+  var workoutsService;
 
-  runApp(new MyApp(mealsBloc));
+  switch (api) {
+    case Api.sqlite:
+      mealsService = MealsSqlite();
+      // TODO implement sqlite provider for workouts
+      workoutsService = WorkoutsFirebase();
+      return;
+    case Api.firebase:
+    default:
+      mealsService = MealsFirebase();
+      workoutsService = WorkoutsFirebase();
+  }
+
+  final appBloc = AppBloc(mealsService, workoutsService);
+
+  runApp(new MyApp(appBloc));
 }
 
 class MyApp extends StatelessWidget {
-  final MealsBloc mealsBloc;
+  final AppBloc bloc;
 
-  MyApp(this.mealsBloc);
+  MyApp(this.bloc);
 
   @override
   Widget build(BuildContext context) {
-    return MealsProvider(
-      bloc: mealsBloc,
+    return BlocProvider(
+      bloc: bloc,
       child: MaterialApp(
         title: 'Ultimate Flutter',
         theme: appTheme,
@@ -45,7 +62,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int _currentIndex = 0;
 
-  final List<Widget> _children = [Schedule(), MealsList(), Workouts()];
+  final List<Widget> _children = [Schedule(), MealsList(), WorkoutsList()];
 
   @override
   Widget build(BuildContext context) {

@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:scheduler_flutter/bloc_provider.dart';
 
-import 'package:scheduler_flutter/src/models/meal.dart';
-import 'package:scheduler_flutter/src/shared/meals_provider.dart';
+import 'package:scheduler_flutter/src/meals/models/meal.dart';
 import 'package:scheduler_flutter/src/shared/widgets/action_button.dart';
 import 'package:scheduler_flutter/src/shared/widgets/alert_delete.dart';
 import 'package:scheduler_flutter/src/shared/widgets/card-section.dart';
@@ -147,7 +147,7 @@ class _MealFormState extends State<MealForm> {
   }
 
   CardSection _formButtons(BuildContext context) {
-    final mealsBloc = MealsProvider.of(context);
+    final mealsBloc = BlocProvider.of(context).mealsBloc;
 
     return CardSection(
       child: Row(
@@ -185,7 +185,7 @@ class _MealFormState extends State<MealForm> {
   }
 
   _saveMeal(BuildContext context) {
-    final mealsBloc = MealsProvider.of(context);
+    final mealsBloc = BlocProvider.of(context).mealsBloc;
 
     if (this._formKey.currentState.validate()) {
       // update info from form into current meal

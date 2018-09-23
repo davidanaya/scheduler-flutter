@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:rxdart/subjects.dart';
 
-import 'package:scheduler_flutter/src/models/meal.dart';
-import 'package:scheduler_flutter/src/services/meals_service.dart';
+import 'package:scheduler_flutter/src/meals/models/meal.dart';
+import 'package:scheduler_flutter/src/meals/services/meals_service.dart';
 
 class MealsBloc {
   final _meals$ = BehaviorSubject<List<Meal>>(seedValue: []);

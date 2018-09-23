@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import 'package:scheduler_flutter/src/models/meal.dart';
-import 'package:scheduler_flutter/src/pages/meal_detail.dart';
-import 'package:scheduler_flutter/src/shared/meals_provider.dart';
+import 'package:scheduler_flutter/bloc_provider.dart';
+import 'package:scheduler_flutter/src/meals/models/meal.dart';
+import 'package:scheduler_flutter/src/meals/pages/meal_detail.dart';
 import 'package:scheduler_flutter/src/shared/widgets/action_button.dart';
 import 'package:scheduler_flutter/src/shared/widgets/alert_delete.dart';
 import 'package:scheduler_flutter/src/shared/widgets/card-section.dart';
@@ -36,7 +36,7 @@ class MealsList extends StatelessWidget {
 
   ActionButton _btnAddMeals(BuildContext context) {
     return ActionButton(
-        text: '+ NEW MEAL',
+        text: '+ NEW',
         fn: () {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => MealDetail()));
@@ -48,7 +48,7 @@ class MealsList extends StatelessWidget {
   }
 
   CardSection _mealsList(BuildContext context) {
-    final mealsBloc = MealsProvider.of(context);
+    final mealsBloc = BlocProvider.of(context).mealsBloc;
 
     return CardSection(
       child: StreamBuilder<List<Meal>>(

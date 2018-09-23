@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:scheduler_flutter/src/models/meal.dart';
 
 import 'package:scheduler_flutter/src/shared/app_bar.dart';
 import 'package:scheduler_flutter/src/shared/widgets/card_title.dart';
 import 'package:scheduler_flutter/src/shared/widgets/icon_label.dart';
-import 'package:scheduler_flutter/src/widgets/meal_form.dart';
+import 'package:scheduler_flutter/src/workouts/models/workout.dart';
+import 'package:scheduler_flutter/src/workouts/widgets/workout_form.dart';
 
-class MealDetail extends StatefulWidget {
-  final Meal meal;
+class WorkoutDetail extends StatefulWidget {
+  final Workout workout;
 
-  MealDetail({meal}) : this.meal = meal ?? Meal();
+  WorkoutDetail({workout}) : this.workout = workout ?? Workout();
 
   @override
-  _MealDetailState createState() => _MealDetailState();
+  _WorkoutDetailState createState() => _WorkoutDetailState();
 }
 
-class _MealDetailState extends State<MealDetail> {
+class _WorkoutDetailState extends State<WorkoutDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,25 +29,25 @@ class _MealDetailState extends State<MealDetail> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                _mealTitle(),
-                MealForm(widget.meal),
+                _workoutTitle(),
+                WorkoutForm(widget.workout),
               ],
             ),
           ),
         ));
   }
 
-  CardTitle _mealTitle() {
+  CardTitle _workoutTitle() {
     return CardTitle(
         child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[_mealLabel()],
+      children: <Widget>[_workoutLabel()],
     ));
   }
 
-  IconLabel _mealLabel() {
+  IconLabel _workoutLabel() {
     return IconLabel(
-        icon: FontAwesomeIcons.heart,
-        label: widget.meal.isUpdate() ? 'Save' : 'Create meal');
+        icon: FontAwesomeIcons.dumbbell,
+        label: widget.workout.isUpdate() ? 'Save' : 'Create workout');
   }
 }

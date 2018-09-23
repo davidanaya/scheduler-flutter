@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'package:scheduler_flutter/src/models/meal.dart';
-import 'package:scheduler_flutter/src/services/meals_service.dart';
+import 'package:scheduler_flutter/src/meals/models/meal.dart';
+import 'package:scheduler_flutter/src/meals/services/meals_service.dart';
 
 class MealsFirebase extends MealsService {
   final Stream<QuerySnapshot> _snapshots$;
