@@ -2,10 +2,11 @@ import 'dart:async';
 
 import 'package:rxdart/subjects.dart';
 
+import 'package:scheduler_flutter/app_bloc.dart';
 import 'package:scheduler_flutter/src/meals/models/meal.dart';
 import 'package:scheduler_flutter/src/meals/services/meals_service.dart';
 
-class MealsBloc {
+class MealsBloc extends Bloc {
   final _meals$ = BehaviorSubject<List<Meal>>(seedValue: []);
 
   final StreamController<Meal> _deleteController = StreamController<Meal>();

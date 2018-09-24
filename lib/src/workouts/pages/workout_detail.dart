@@ -18,6 +18,15 @@ class WorkoutDetail extends StatefulWidget {
 }
 
 class _WorkoutDetailState extends State<WorkoutDetail> {
+  // if we try to use widget.workout instead, on every render a new Workout instance is created
+  Workout _workout;
+
+  @override
+  void initState() {
+    _workout = widget.workout ?? Workout();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +39,7 @@ class _WorkoutDetailState extends State<WorkoutDetail> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 _workoutTitle(),
-                WorkoutForm(widget.workout),
+                WorkoutForm(_workout),
               ],
             ),
           ),
@@ -48,6 +57,8 @@ class _WorkoutDetailState extends State<WorkoutDetail> {
   IconLabel _workoutLabel() {
     return IconLabel(
         icon: FontAwesomeIcons.dumbbell,
-        label: widget.workout.isUpdate() ? 'Save' : 'Create workout');
+        label: _workout != null && _workout.isUpdate()
+            ? 'Save'
+            : 'Create workout');
   }
 }

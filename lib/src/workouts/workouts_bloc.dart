@@ -2,10 +2,11 @@ import 'dart:async';
 
 import 'package:rxdart/subjects.dart';
 
+import 'package:scheduler_flutter/app_bloc.dart';
 import 'package:scheduler_flutter/src/workouts/models/workout.dart';
 import 'package:scheduler_flutter/src/workouts/services/workouts_service.dart';
 
-class WorkoutsBloc {
+class WorkoutsBloc extends Bloc {
   final _workouts$ = BehaviorSubject<List<Workout>>(seedValue: []);
 
   final StreamController<Workout> _deleteController =

@@ -1,11 +1,10 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:scheduler_flutter/bloc_provider.dart';
 
-import 'package:scheduler_flutter/src/shared/widgets/alert_delete.dart';
+import 'package:scheduler_flutter/bloc_provider.dart';
 import 'package:scheduler_flutter/src/shared/widgets/card-section.dart';
+import 'package:scheduler_flutter/src/shared/widgets/form_buttons.dart';
 import 'package:scheduler_flutter/src/workouts/models/workout.dart';
+import 'package:scheduler_flutter/src/workouts/widgets/workout_type_selector.dart';
 
 class WorkoutForm extends StatefulWidget {
   final Workout workout;
@@ -22,7 +21,6 @@ class _WorkoutFormState extends State<WorkoutForm> {
   @override
   void initState() {
     super.initState();
-
     _nameController.text = widget.workout.name;
   }
 
@@ -38,8 +36,18 @@ class _WorkoutFormState extends State<WorkoutForm> {
   Widget build(BuildContext context) {
     return Form(
         key: _formKey,
-        child:
-            Column(children: <Widget>[_workoutName(), _formButtons(context)]));
+        child: Column(children: <Widget>[
+          _workoutName(),
+          WorkoutTypeSelector(widget.workout.isStrength ? 0 : 1, _onSelectType),
+          widget.workout.isStrength ? Text('STRENGTH') : Text('ENDURANCE'),
+          _formButtons(context)
+        ]));
+  }
+
+  _onSelectType(WorkoutType type) {
+    setState(() {
+      widget.workout.setType(type);
+    });
   }
 
   CardSection _workoutName() {
@@ -70,47 +78,21 @@ class _WorkoutFormState extends State<WorkoutForm> {
         border: OutlineInputBorder());
   }
 
-  CardSection _formButtons(BuildContext context) {
-    final workoutsBloc = BlocProvider.of(context).workoutsBloc;
+  FormButtons _formButtons(BuildContext context) {
+    return FormButtons(_saveWorkout, _deleteWorkout);
+  }
 
-    return CardSection(
-      child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Row(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
-              IconButton(
-                onPressed: () {
-                  _saveWorkout(context);
-                },
-                icon: Icon(Icons.check),
-                color: Color(0xFF39a1e7),
-              ),
-              IconButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  icon: Icon(Icons.close)),
-            ]),
-            IconButton(
-                onPressed: () async {
-                  var delete = await _showAlertDelete(context);
-                  if (delete) {
-                    if (widget.workout.isUpdate()) {
-                      workoutsBloc.delete.add(widget.workout);
-                    }
-                    Navigator.pop(context);
-                  }
-                },
-                icon: Icon(Icons.delete),
-                color: Colors.red),
-          ]),
-      showBottomBorder: false,
-    );
+  _deleteWorkout(BuildContext context) {
+    final workoutsBloc = BlocProvider.of(context).workoutsBloc;
+    if (widget.workout.isUpdate()) {
+      workoutsBloc.delete.add(widget.workout);
+    }
   }
 
   _saveWorkout(BuildContext context) {
     final workoutsBloc = BlocProvider.of(context).workoutsBloc;
 
+    print('WORKOUT ${widget.workout}');
     if (this._formKey.currentState.validate()) {
       // update info from form into current meal
       _formKey.currentState.save();
@@ -118,13 +100,5 @@ class _WorkoutFormState extends State<WorkoutForm> {
     }
 
     Navigator.pop(context);
-  }
-
-  Future<bool> _showAlertDelete(BuildContext context) {
-    return showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return showAlertDelete(context);
-        });
   }
 }

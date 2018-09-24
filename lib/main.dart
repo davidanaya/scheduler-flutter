@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+
 import 'package:scheduler_flutter/app_bloc.dart';
 import 'package:scheduler_flutter/bloc_provider.dart';
-
 import 'package:scheduler_flutter/src/meals/pages/meals_list.dart';
 import 'package:scheduler_flutter/src/meals/services/meals_firebase.dart';
 import 'package:scheduler_flutter/src/meals/services/meals_sqlite.dart';

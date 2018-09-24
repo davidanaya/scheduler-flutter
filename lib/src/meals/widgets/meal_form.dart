@@ -1,12 +1,10 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:scheduler_flutter/bloc_provider.dart';
 
 import 'package:scheduler_flutter/src/meals/models/meal.dart';
 import 'package:scheduler_flutter/src/shared/widgets/action_button.dart';
-import 'package:scheduler_flutter/src/shared/widgets/alert_delete.dart';
 import 'package:scheduler_flutter/src/shared/widgets/card-section.dart';
+import 'package:scheduler_flutter/src/shared/widgets/form_buttons.dart';
 
 class MealForm extends StatefulWidget {
   final Meal meal;
@@ -146,42 +144,15 @@ class _MealFormState extends State<MealForm> {
         border: OutlineInputBorder());
   }
 
-  CardSection _formButtons(BuildContext context) {
-    final mealsBloc = BlocProvider.of(context).mealsBloc;
+  FormButtons _formButtons(BuildContext context) {
+    return FormButtons(_saveMeal, _deleteMeal);
+  }
 
-    return CardSection(
-      child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Row(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
-              IconButton(
-                onPressed: () {
-                  _saveMeal(context);
-                },
-                icon: Icon(Icons.check),
-                color: Color(0xFF39a1e7),
-              ),
-              IconButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  icon: Icon(Icons.close)),
-            ]),
-            IconButton(
-                onPressed: () async {
-                  var delete = await _showAlertDelete(context);
-                  if (delete) {
-                    if (widget.meal.isUpdate()) {
-                      mealsBloc.delete.add(widget.meal);
-                    }
-                    Navigator.pop(context);
-                  }
-                },
-                icon: Icon(Icons.delete),
-                color: Colors.red),
-          ]),
-      showBottomBorder: false,
-    );
+  _deleteMeal(BuildContext context) {
+    final mealsBloc = BlocProvider.of(context).mealsBloc;
+    if (widget.meal.isUpdate()) {
+      mealsBloc.delete.add(widget.meal);
+    }
   }
 
   _saveMeal(BuildContext context) {
@@ -195,13 +166,5 @@ class _MealFormState extends State<MealForm> {
     }
 
     Navigator.pop(context);
-  }
-
-  Future<bool> _showAlertDelete(BuildContext context) {
-    return showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return showAlertDelete(context);
-        });
   }
 }

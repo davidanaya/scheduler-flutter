@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 AlertDialog showAlertDelete(BuildContext context) {
   return AlertDialog(
       title: Text(
-        'Delete meal?',
+        'Delete?',
         textAlign: TextAlign.center,
       ),
       actions: <Widget>[
