@@ -5,7 +5,8 @@ import 'package:scheduler_flutter/bloc_provider.dart';
 import 'package:scheduler_flutter/src/meals/pages/meals_list.dart';
 import 'package:scheduler_flutter/src/meals/services/meals_firebase.dart';
 import 'package:scheduler_flutter/src/meals/services/meals_sqlite.dart';
-import 'package:scheduler_flutter/src/schedule/schedule.dart';
+import 'package:scheduler_flutter/src/schedules/pages/day_schedule.dart';
+import 'package:scheduler_flutter/src/schedules/services/schedules_firebase.dart';
 import 'package:scheduler_flutter/src/shared/app_bar.dart';
 import 'package:scheduler_flutter/src/shared/theme.dart';
 import 'package:scheduler_flutter/src/workouts/pages/workouts_list.dart';
@@ -18,20 +19,23 @@ void main() {
 
   var mealsService;
   var workoutsService;
+  var schedulesService;
 
   switch (api) {
     case Api.sqlite:
       mealsService = MealsSqlite();
-      // TODO implement sqlite provider for workouts
+      // TODO implement sqlite provider for workouts and schedules
       workoutsService = WorkoutsFirebase();
+      schedulesService = SchedulesFirebase();
       return;
     case Api.firebase:
     default:
       mealsService = MealsFirebase();
       workoutsService = WorkoutsFirebase();
+      schedulesService = SchedulesFirebase();
   }
 
-  final appBloc = AppBloc(mealsService, workoutsService);
+  final appBloc = AppBloc(mealsService, workoutsService, schedulesService);
 
   runApp(new MyApp(appBloc));
 }
@@ -62,7 +66,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int _currentIndex = 0;
 
-  final List<Widget> _children = [Schedule(), MealsList(), WorkoutsList()];
+  final List<Widget> _children = [DaySchedule(), MealsList(), WorkoutsList()];
 
   @override
   Widget build(BuildContext context) {

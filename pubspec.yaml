@@ -17,7 +17,7 @@ dependencies:
   cloud_firestore: ^0.7.3
   sqflite: ^0.12.1
   path_provider: ^0.4.1
-  uuid: ^1.0.3
+  intl: ^0.15.7
 
 dev_dependencies:
   flutter_test:
