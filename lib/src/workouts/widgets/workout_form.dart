@@ -66,7 +66,10 @@ class _WorkoutFormState extends State<WorkoutForm> {
               widget.workout.name = value;
             },
             decoration: _textFieldDecoration(
-                label: 'Workout name', hint: 'e.g. Chest press'),
+                label: 'Workout name',
+                hint: widget.workout.isStrength
+                    ? 'e.g. Benchpress'
+                    : 'e.g. Treadmill'),
           )),
       showBottomBorder: true,
     );
