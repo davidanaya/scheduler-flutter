@@ -13,6 +13,6 @@ abstract class Endurance {
       {'distance': distance, 'minutes': minutes};
 
   String enduranceToString() {
-    return '[ distance: $distance, minutes: $minutes ]';
+    return 'Distance: $distance Minutes: $minutes';
   }
 }

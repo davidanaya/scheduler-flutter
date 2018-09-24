@@ -21,10 +21,9 @@ class _MealFormState extends State<MealForm> {
 
   @override
   void initState() {
-    super.initState();
-
     _nameController.text = widget.meal.name;
     widget.meal.food.forEach(_addFoodController);
+    super.initState();
   }
 
   @override

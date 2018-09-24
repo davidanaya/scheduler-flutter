@@ -4,6 +4,8 @@ import 'package:scheduler_flutter/bloc_provider.dart';
 import 'package:scheduler_flutter/src/shared/widgets/card-section.dart';
 import 'package:scheduler_flutter/src/shared/widgets/form_buttons.dart';
 import 'package:scheduler_flutter/src/workouts/models/workout.dart';
+import 'package:scheduler_flutter/src/workouts/widgets/endurance_form.dart';
+import 'package:scheduler_flutter/src/workouts/widgets/strength_form.dart';
 import 'package:scheduler_flutter/src/workouts/widgets/workout_type_selector.dart';
 
 class WorkoutForm extends StatefulWidget {
@@ -39,7 +41,9 @@ class _WorkoutFormState extends State<WorkoutForm> {
         child: Column(children: <Widget>[
           _workoutName(),
           WorkoutTypeSelector(widget.workout.isStrength ? 0 : 1, _onSelectType),
-          widget.workout.isStrength ? Text('STRENGTH') : Text('ENDURANCE'),
+          widget.workout.isStrength
+              ? StrengthForm(widget.workout)
+              : EnduranceForm(widget.workout),
           _formButtons(context)
         ]));
   }
@@ -92,7 +96,6 @@ class _WorkoutFormState extends State<WorkoutForm> {
   _saveWorkout(BuildContext context) {
     final workoutsBloc = BlocProvider.of(context).workoutsBloc;
 
-    print('WORKOUT ${widget.workout}');
     if (this._formKey.currentState.validate()) {
       // update info from form into current meal
       _formKey.currentState.save();

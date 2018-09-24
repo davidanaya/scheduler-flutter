@@ -19,10 +19,8 @@ class Workout extends Object with Strength, Endurance {
     _id = snapshot.documentID;
 
     name = snapshot.data['name'];
-    _type = WorkoutType.values.firstWhere((e) {
-      print('$e, ${snapshot.data['type']}');
-      return e.toString() == snapshot.data['type'];
-    });
+    _type = WorkoutType.values
+        .firstWhere((e) => e.toString() == snapshot.data['type']);
 
     isStrength
         ? strengthFromSnapshot(snapshot)

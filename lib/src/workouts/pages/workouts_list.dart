@@ -91,7 +91,9 @@ class WorkoutTile extends StatelessWidget {
             child: ListTile(
               title: Text(workout.name),
               subtitle: Text(
-                workout.type,
+                workout.isStrength
+                    ? workout.strengthToString()
+                    : workout.enduranceToString(),
                 style: TextStyle(
                     color: Color(0xFF8ea6bd),
                     fontSize: 12.0,

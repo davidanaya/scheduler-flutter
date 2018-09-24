@@ -15,6 +15,6 @@ abstract class Strength {
       {'reps': reps, 'sets': sets, 'weight': weight};
 
   String strengthToString() {
-    return '[ reps: $reps, sets: $sets, weight: $weight ]';
+    return 'Reps: $reps Sets: $sets Weight: $weight';
   }
 }
